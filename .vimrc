@@ -29,14 +29,18 @@ Plug 'octol/vim-cpp-enhanced-highlight'
 Plug 'roxma/nvim-yarp'
 Plug 'roxma/vim-hug-neovim-rpc'
 Plug 'sukima/xmledit'
+Plug 'tomtom/tcomment_vim'
 Plug 'vim-scripts/AnsiEsc.vim'
 Plug 'vim-scripts/VisIncr'
 Plug 'vim-scripts/a.vim'
 Plug 'xolox/vim-lua-ftplugin'
 Plug 'xolox/vim-misc'
 Plug 'tpope/vim-fugitive'
+Plug 'tpope/vim-surround'
 Plug 'hrsh7th/vim-unmatchparen'
 Plug 'etorth/timestamp.vim'
+Plug 'msgpack/msgpack-python'
+Plug 'Yggdroot/LeaderF'
 
 " Initialize plugin system
 call plug#end()
