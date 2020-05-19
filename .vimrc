@@ -92,6 +92,9 @@ autocmd BufNewFile,BufRead *.C      set nowrap
 autocmd BufNewFile,BufRead *.cpp    set nowrap
 autocmd BufNewFile,BufRead *.hpp    set nowrap
 autocmd BufNewFile,BufRead *.m      set nowrap
+autocmd BufNewFile,BufRead *.msg    set nowrap
+autocmd BufNewFile,BufRead *.log    set nowrap
+autocmd BufNewFile,BufRead *.key    set nowrap
 
 autocmd BufEnter *.cpp set nospell
 autocmd BufEnter *.hpp set nospell
@@ -126,11 +129,13 @@ imap <DOWN>         <NOP>
 imap <LEFT>         <NOP>
 imap <RIGHT>        <NOP>
 
-map         gf      :tabnew <cfile><cr>
+" map         gf      :tabnew <cfile><cr>
+map         gf      :sp <cfile><cr>
 nnoremap    <C-J>   :bn<cr>
 nnoremap    <C-K>   :bp<cr>
 
 " if &diff
+"     colorscheme desertEx
 "     finish
 " endif
 
@@ -156,6 +161,7 @@ filetype    indent on
 autocmd BufEnter *.tex set spell
 autocmd BufEnter *.fl  set filetype=cpp
 autocmd BufEnter *.qel set filetype=tcl
+autocmd BufEnter *.xel set filetype=tcl
 
 function! MyWriteDiary()
     if(input("WRITE DIARY (Y/N):","Y") =~? "Y.*")
@@ -167,10 +173,10 @@ function! MyWriteDiary()
         " endif
         let s:DiaryName = $HOME."/Dropbox/.diary/".strftime("%Y%m%d")
 
-	let s:passwordFileName = $HOME.'/.diary_password'
-	if !filereadable(s:passwordFileName)
+    let s:passwordFileName = $HOME.'/.diary_password'
+    if !filereadable(s:passwordFileName)
            echoerr 'cannot find password file: '.s:passwordFileName
-	   return
+       return
         endif
 
         let s:DiaryPWD = readfile(s:passwordFileName)[0]
@@ -222,7 +228,7 @@ set dictionary += "/usr/share/vim/dic/misc"
 set dictionary += "/usr/share/vim/dic/phrase"
 set dictionary += "/usr/share/vim/dic/place"
 
-set runtimepath^=~/.vim/bundle/ctrlp.vim
+" set runtimepath^=~/.vim/bundle/ctrlp.vim
 
 function! CreateCscopeDB()
     let s:strPath1 = expand("$PWD")
@@ -538,6 +544,36 @@ augroup MyVimConfiguration
     autocmd BufWritePost .vimrc,_vimrc,vimrc,.gvimrc,_gvimrc,gvimrc so $MYVIMRC | if has('gui_running') | so $MYGVIMRC | endif
 augroup END
 
+function! IsWorkHost()
+    return hostname() == "vlsj-anhong"
+                \ || hostname() =~ "hsv-sc.*$"
+                \ || hostname() =~ "cva-xeon.*$"
+                \ || hostname() =~ "hsv-sw.*$"
+                \ || hostname() =~ "cva-mp.*$"
+endfunction
+
+function! IsWorkVM()
+    return hostname() == "vlsj-anhong"
+                \ || hostname() =~ "cva-mp.*$"
+endfunction
+
+if IsWorkHost()
+    let g:UndoFileDir="$HOME"."/.vimundo"
+    execute ":set undodir=".g:UndoFileDir
+    set undofile
+
+    set t_Co        =256
+    set tabstop     =8
+    " set shiftwidth 
+    set t_kd        =OA
+    set t_ku        =OB
+    set t_kr        =OC
+    set t_kl        =OD
+else
+    let g:UndoFileDir="$HOME"."/Dropbox/.vimundo/".hostname()
+    execute ":set undodir=".g:UndoFileDir
+    set undofile
+endif
 
 function! CreateCrossLink()
     let s:strFileName = expand("%:p")
@@ -586,6 +622,15 @@ function! s:AddCscopeDB()
     endif
 endfunction
 command! CSAddDB :call s:AddCscopeDB()
+
+function! s:IgnoreSpaceDiff()
+    if &diff
+        set diffopt+=iwhite
+    else
+        echohl ErrorMsg | echo "Not in diff mode!" | echohl None
+    endif
+endfunction
+command! IgnoreSpaceDiff :call s:IgnoreSpaceDiff()
 
 " self diff
 function! s:DiffWithSaved()
@@ -659,6 +704,53 @@ if g:isWin
 else
     let g:airline_theme = 'light'
     let g:airline_powerline_fonts = 1
+endif
+
+" use cdpath to edit file
+" edit file can now seach path list in $VIM_CDPATH
+function! FindInCDPath(name)
+    let path_backup = &path
+    if empty(&path)
+        let &path = join(split($VIM_CDPATH), ',')
+    else
+        let &path = &path . "," . join(split($VIM_CDPATH), ',')
+    endif
+
+    setlocal bufhidden=wipe
+    execute 'silent keepalt find ' . fnameescape(a:name)
+    let &path = path_backup
+    set bufhidden<
+endfunction
+
+" if !empty($VIM_CDPATH)
+"     autocmd BufNewFile * nested call FindInCDPath(expand('<afile>'))
+" endif
+
+" config for leaderF
+" still uses ctrlp shortkey
+let g:Lf_ShortcutF = '<C-P>'
+let g:Lf_FollowLinks = 1
+let g:Lf_PreviewInPopup = 1
+let g:Lf_WindowPosition = 'popup'
+let g:Lf_CommandMap = {'<C-J>': ['<C-N>'], '<C-K>': ['<C-P>']}
+" let g:Lf_DefaultMode = 'NameOnly'
+if !empty($P_HOME)
+    " let g:Lf_WorkingDirectory = $P_HOME
+    let g:Lf_RootMarkers = ['.P4Config', '.P4ignore']
+    let g:Lf_WorkingDirectoryMode = 'a'
+endif
+
+" if has("patch-8.1.0360")
+"     set diffopt+=internal,algorithm:patience
+" endif
+
+if IsWorkVM()
+    " don't use deoplete
+    " no python support for basic version
+else
+    set pyxversion =3
+    let g:deoplete#enable_at_startup = 1
+    let g:deoplete#enable_smart_case = 1
 endif
 
 colorscheme desertEx
