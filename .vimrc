@@ -40,7 +40,7 @@ Plug 'tpope/vim-surround'
 Plug 'hrsh7th/vim-unmatchparen'
 Plug 'etorth/timestamp.vim'
 Plug 'msgpack/msgpack-python'
-Plug 'Yggdroot/LeaderF'
+Plug 'Yggdroot/LeaderF', { 'do': './install.sh' }
 
 " Initialize plugin system
 call plug#end()
