@@ -12,10 +12,10 @@ set mouse=
 set nospell
 
 if (g:isWin)
-    winpos 0 0
+    winpos 0 0 
     set lines=80 columns=120
     "set guifont=Consolas:h13:w8:cANSI
-    " set guifont=Courier\ New:h13:w8:cANSI
+    " set guifont=Courier\ 10:h13:w8:cANSI
     " set guifont=Monaco\ for\ Powerline:h13:w8:cANSI
     " set guifont=Monaco_for_Powerline:h13:w8:cANSI
     " set guifont=Monaco\ for\ Powerline:h13:w8
@@ -35,6 +35,6 @@ if (g:isWin)
     "
     set spell
 else
-    " set guifont=Courier\ 10\ Pitch\ 13
-    set guifont=DejaVu\ Sans\ Mono\ 16
+    set guifont=Courier\ 10\ Pitch\ 14
+    " set guifont=DejaVu\ Sans\ Mono\ 16
 endif
