@@ -38,10 +38,3 @@ else
     " set guifont=Courier\ 10\ Pitch\ 13
     set guifont=DejaVu\ Sans\ Mono\ 16
 endif
-
-if has('win32') || has('win64')
-    if (v:version == 704 && has("patch393")) || v:version > 704
-        " set renderoptions=type:directx, level:0.50, gamma:1.0, contrast:0.0, geom:1, renmode:5, taamode:1
-        set renderoptions=type:directx
-    end
-end 
