@@ -611,7 +611,8 @@ if(hostname() == "vlsj-anhong" || hostname() =~ "hsv-sc.*$" || hostname() =~ "cv
     command! CrossLink call CreateCrossLink()
 
     " set makeprg=clearmake\ SYSTRG=64bit\ debug_install
-    let &makeprg="clearmake SYSTRG=64bit debug_install"
+    " let &makeprg="clearmake SYSTRG=64bit debug_install"
+    let &makeprg="gmake -j 32 debug-install SYSTRG=64bit"
 else
     let &makeprg="make -j 4"
     let g:UndoFileDir="$HOME"."/Dropbox/.vimundo/".hostname()
