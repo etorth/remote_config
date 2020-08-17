@@ -761,4 +761,7 @@ else
     \ })
 endif
 
+let g:alternateExtensions_C = "h,hpp,H,HPP"
+let g:alternateExtensions_h = "c,cpp,cxx,cc,CC,C,CPP,CXX"
+
 colorscheme desertEx
