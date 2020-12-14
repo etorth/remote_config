@@ -745,6 +745,18 @@ if !empty($P_HOME)
     let g:Lf_WorkingDirectoryMode = 'a'
 endif
 
+" cmake support for LeaderF
+" find the configured source dir: https://stackoverflow.com/questions/27188786/find-source-directory-from-build-directory-in-cmake
+if filereadable("CMakeCache.txt")
+    for line in readfile("CMakeCache.txt")
+        let foundDirLine = matchstr(line, '.*_SOURCE_DIR:STATIC=.*')
+        let foundDir = matchstr(foundDirLine, '/.*')
+        if !empty(foundDir)
+            let g:Lf_WorkingDirectory = foundDir
+        endif
+    endfor
+endif
+
 " if has("patch-8.1.0360")
 "     set diffopt+=internal,algorithm:patience
 " endif
