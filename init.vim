@@ -411,36 +411,6 @@ function! FindInCDPath(name)
     set bufhidden<
 endfunction
 
-" if !empty($VIM_CDPATH)
-"     autocmd BufNewFile * nested call FindInCDPath(expand('<afile>'))
-" endif
-
-" " config for leaderF
-" " still uses ctrlp shortkey
-" let g:Lf_ShortcutF = '<C-P>'
-" let g:Lf_FollowLinks = 1
-" let g:Lf_PreviewInPopup = 1
-" let g:Lf_WindowPosition = 'popup'
-" let g:Lf_CommandMap = {'<C-J>': ['<C-N>'], '<C-K>': ['<C-P>']}
-" " let g:Lf_DefaultMode = 'NameOnly'
-" if !empty($P_HOME)
-"     " let g:Lf_WorkingDirectory = $P_HOME
-"     let g:Lf_RootMarkers = ['.P4Config', '.P4ignore']
-"     let g:Lf_WorkingDirectoryMode = 'a'
-" endif
-"
-" " cmake support for LeaderF
-" " find the configured source dir: https://stackoverflow.com/questions/27188786/find-source-directory-from-build-directory-in-cmake
-" if filereadable("CMakeCache.txt")
-"     for line in readfile("CMakeCache.txt")
-"         let foundDirLine = matchstr(line, '.*_SOURCE_DIR:STATIC=.*')
-"         let foundDir = matchstr(foundDirLine, '/.*')
-"         if !empty(foundDir)
-"             let g:Lf_WorkingDirectory = foundDir
-"         endif
-"     endfor
-" endif
-
 nnoremap <C-P>f <cmd>Telescope find_files<cr>
 
 if IsWorkVM()
