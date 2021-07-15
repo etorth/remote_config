@@ -31,14 +31,13 @@ call plug#begin(stdpath('data').'/plugged')
 
 Plug 'neovim/nvim-lspconfig'
 Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
-Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
+Plug 'Shougo/deoplete.nvim', {'do': ':UpdateRemotePlugins'}
 Plug 'WolfgangMehner/c-support'
 Plug 'jiangmiao/auto-pairs'
 Plug 'luochen1990/rainbow'
 Plug 'mbbill/desertEx'
 Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
-Plug 'bfrg/vim-cpp-modern'
 Plug 'sukima/xmledit'
 Plug 'tomtom/tcomment_vim'
 Plug 'vim-scripts/AnsiEsc.vim'
