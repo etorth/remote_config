@@ -263,9 +263,10 @@ if IsWorkHost()
     set tabstop     =8
     " set shiftwidth
     set t_kd        = OA
-    set t_ku        = OB
-    set t_kr        = OC
-    set t_kl        = OD
+    set t_kd        =OA
+    set t_ku        =OB
+    set t_kr        =OC
+    set t_kl        =OD
 else
     let g:UndoFileDir="$HOME"."/Dropbox/.vimundo/".hostname()
     execute ":set undodir=".g:UndoFileDir
