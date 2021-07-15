@@ -30,6 +30,7 @@ call plug#begin(stdpath('data').'/plugged')
 " Make sure you use single quotes
 
 Plug 'neovim/nvim-lspconfig'
+Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
 Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
 Plug 'WolfgangMehner/c-support'
 Plug 'jiangmiao/auto-pairs'
@@ -435,3 +436,10 @@ autocmd BufWinLeave * call clearmatches()
 
 " remove all trailing whitespaces
 nnoremap <silent> <leader>rs :let _s=@/ <Bar> :%s/\s\+$//e <Bar> :let @/=_s <Bar> :nohl <Bar> :unlet _s <CR>
+
+" LSP config
+lua << EOF
+require'lspconfig'.clangd.setup{
+    cmd = {"clangd-11", "--background-index", "--compile-commands-dir=/home/anhong/b"},
+}
+EOF
