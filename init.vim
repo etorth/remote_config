@@ -1,4 +1,20 @@
-let g:isWin = has("win32") || has("win64") || has("win32unix")
+function! s:IsWinOS()
+    return has("win32") || has("win64") || has("win32unix")
+endfunction
+
+function! s:IsCDNSVMHost()
+    return hostname() == "cva-mp86"
+                \ || hostname() == "vlsj-anhong"
+                \ || hostname() == "sjcvl-anhong"
+endfunction
+
+function! s:IsCDNSHost()
+    return s:IsCDNSVMHost()
+                \ || hostname() =~ "hsv-sc.*$"
+                \ || hostname() =~ "hsv-sw.*$"
+                \ || hostname() =~ "cva-mp.*$"
+                \ || hostname() =~ "cva-xeon.*$"
+endfunction
 
 " ================
 " vim-plug setup
@@ -213,13 +229,6 @@ if (has("cscope") && !has("win32") && !has("win64"))
     nmap <C-\>f :cs find f <C-R>=expand("<cfile>")<CR><CR>
     nmap <C-\>i :cs find i ^<C-R>=expand("<cfile>")<CR>$<CR>
     nmap <C-\>d :cs find d <C-R>=expand("<cword>")<CR><CR>
-
-    " for CCTree
-    let CCTreeEnhancedSymbolProcessing =1
-    " let g:CCTreeOrientation            ="leftabove"
-    if winwidth(0) < 100
-        let CCTreeWindowVertical       =0
-    endif
 endif
 
 autocmd BufRead,BufNewFile  *.h  set filetype=cpp
@@ -240,28 +249,13 @@ highlight FoldColumn guibg=darkgrey guifg=white
 " set to 0 if you want to enable it later via :RainbowToggle
 let g:rainbow_active = 1
 
-function! IsWorkHost()
-    return hostname() == "vlsj-anhong"
-                \ || hostname() == "sjcvl-anhong"
-                \ || hostname() =~ "hsv-sc.*$"
-                \ || hostname() =~ "cva-xeon.*$"
-                \ || hostname() =~ "hsv-sw.*$"
-                \ || hostname() =~ "cva-mp.*$"
-endfunction
-
-function! IsWorkVM()
-    return hostname() == "vlsj-anhong"
-                \ || hostname() =~ "cva-mp.*$"
-endfunction
-
-if IsWorkHost()
+if s:IsCDNSHost()
     let g:UndoFileDir="$HOME"."/.vimundo"
     execute ":set undodir=".g:UndoFileDir
     set undofile
 
     set t_Co        =256
     set tabstop     =8
-    " set shiftwidth
     set t_kd        =OA
     set t_ku        =OB
     set t_kr        =OC
@@ -293,7 +287,6 @@ if(hostname() == "vlsj-anhong" || hostname() =~ "hsv-sc.*$" || hostname() =~ "cv
 
     set t_Co        =256
     set tabstop     =8
-    " set shiftwidth
     set t_kd        =OA
     set t_ku        =OB
     set t_kr        =OC
@@ -413,7 +406,7 @@ endfunction
 
 nnoremap <C-P>f <cmd>Telescope find_files<cr>
 
-if IsWorkVM()
+if s:IsCDNSVMHost()
     " don't use deoplete
     " no python support for basic version
 else
