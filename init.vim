@@ -132,6 +132,7 @@ filetype    indent on
 
 autocmd BufEnter *.txt set spell
 autocmd BufEnter *.tex set spell
+autocmd BufEnter *.C   set filetype=cpp
 autocmd BufEnter *.fl  set filetype=cpp
 autocmd BufEnter *.qel set filetype=tcl
 autocmd BufEnter *.xel set filetype=tcl
@@ -437,9 +438,24 @@ autocmd BufWinLeave * call clearmatches()
 " remove all trailing whitespaces
 nnoremap <silent> <leader>rs :let _s=@/ <Bar> :%s/\s\+$//e <Bar> :let @/=_s <Bar> :nohl <Bar> :unlet _s <CR>
 
-" LSP config
+" " LSP config
+" lua << EOF
+" require'lspconfig'.clangd.setup{
+"     cmd = {"clangd-11", "--background-index", "--compile-commands-dir=/home/anhong/b"},
+" }
+" EOF
+
 lua << EOF
-require'lspconfig'.clangd.setup{
-    cmd = {"clangd-11", "--background-index", "--compile-commands-dir=/home/anhong/b"},
+local lspconfig = require'lspconfig'
+lspconfig.ccls.setup {
+    init_options = {
+        compilationDatabaseDirectory = "/home/anhong/b";
+        index = {
+            threads = 0;
+        };
+        clang = {
+            excludeArgs = { "-frounding-math"} ;
+        };
+    }
 }
 EOF
