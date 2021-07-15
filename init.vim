@@ -262,7 +262,6 @@ if IsWorkHost()
     set t_Co        =256
     set tabstop     =8
     " set shiftwidth
-    set t_kd        = OA
     set t_kd        =OA
     set t_ku        =OB
     set t_kr        =OC
@@ -295,10 +294,10 @@ if(hostname() == "vlsj-anhong" || hostname() =~ "hsv-sc.*$" || hostname() =~ "cv
     set t_Co        =256
     set tabstop     =8
     " set shiftwidth
-    set t_kd        = OA
-    set t_ku        = OB
-    set t_kr        = OC
-    set t_kl        = OD
+    set t_kd        =OA
+    set t_ku        =OB
+    set t_kr        =OC
+    set t_kl        =OD
 
     " autocmd BufReadPre * call CreateCrossLink()
     " autocmd BufNewFile * call CreateCrossLink()
