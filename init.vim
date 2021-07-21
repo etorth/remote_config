@@ -460,51 +460,39 @@ EOF
 " for telescope interface
 " print cheat list, code from: https://www.statox.fr/posts/2021/03/breaking_habits_floating_window/
 
-function! ListTelescopeCheatSheet(message) abort
-    " Define the size of the floating window
-    let width = 50
-    let height = 10
+function! ListTelescopeCheatSheet() abort
+    let keylist = [
+                \ '[f] find',
+                \ '[g] git' ,
+                \ ]
 
-    " Create the scratch buffer displayed in the floating window
-    let buf = nvim_create_buf(v:false, v:true)
+    let win_width  = 50
+    let win_height = len(keylist)
 
-    " create the lines to draw a box
-    let horizontal_border = '+' . repeat('-', width - 2) . '+'
-    let empty_line = '|' . repeat(' ', width - 2) . '|'
-    let lines = flatten([horizontal_border, map(range(height-2), 'empty_line'), horizontal_border])
-    " set the box in the buffer
-    call nvim_buf_set_lines(buf, 0, -1, v:false, lines)
-
-    " Create the lines for the centered message and put them in the buffer
-    let offset = 0
-    for line in a:message
-        let start_col = (width - len(line))/2
-        let end_col = start_col + len(line)
-        let current_row = height/2-len(a:message)/2 + offset
-        let offset = offset + 1
-        call nvim_buf_set_text(buf, current_row, start_col, current_row, end_col, [line])
+    for line in keylist
+        let win_width = max([win_width, len(line)])
     endfor
 
-    " Set mappings in the buffer to close the window easily
-    call nvim_buf_set_keymap(buf, 'n', '<Esc>', ':close<CR>', {'silent': v:true, 'nowait': v:true, 'noremap': v:true})
-    call nvim_buf_set_keymap(buf, 'n', '<CR>' , ':close<CR>', {'silent': v:true, 'nowait': v:true, 'noremap': v:true})
-    call nvim_buf_set_keymap(buf, 'n', 'f'    , ':close | Telescope find_files<CR>', {'silent': v:true, 'nowait': v:true, 'noremap': v:true})
-    call nvim_buf_set_keymap(buf, 'n', 'g'    , ':close | Telescope  git_files<CR>', {'silent': v:true, 'nowait': v:true, 'noremap': v:true})
+    let bufid = nvim_create_buf(v:false, v:true)
+    call nvim_buf_set_lines(bufid, 0, -1, v:false, keylist)
 
-    " Create the floating window
+    call nvim_buf_set_keymap(bufid, 'n', '<Esc>', ':close<CR>',                        {'silent': v:true, 'nowait': v:true, 'noremap': v:true})
+    call nvim_buf_set_keymap(bufid, 'n', '<CR>' , ':close<CR>',                        {'silent': v:true, 'nowait': v:true, 'noremap': v:true})
+    call nvim_buf_set_keymap(bufid, 'n', 'f'    , ':close | Telescope find_files<CR>', {'silent': v:true, 'nowait': v:true, 'noremap': v:true})
+    call nvim_buf_set_keymap(bufid, 'n', 'g'    , ':close | Telescope  git_files<CR>', {'silent': v:true, 'nowait': v:true, 'noremap': v:true})
+
     let ui = nvim_list_uis()[0]
     let opts = {'relative': 'editor',
-                \ 'width': width,
-                \ 'height': height,
-                \ 'col': (ui.width/2) - (width/2),
-                \ 'row': (ui.height/2) - (height/2),
+                \ 'width' : win_width,
+                \ 'height': win_height,
+                \ 'col'   : (ui.width  / 2) - (win_width  / 2),
+                \ 'row'   : (ui.height / 2) - (win_height / 2),
                 \ 'anchor': 'NW',
-                \ 'style': 'minimal',
+                \ 'style' : 'minimal',
                 \ 'border': 'single',
                 \ }
-    let win = nvim_open_win(buf, 1, opts)
 
-    " Change highlighting
-    call nvim_win_set_option(win, 'winhl', 'Normal:ErrorFloat')
+    let winid = nvim_open_win(bufid, 1, opts)
+    call nvim_win_set_option(winid, 'winhl', 'Normal:ErrorFloat')
 endfunction
-nnoremap <C-P> <cmd>call ListTelescopeCheatSheet(['[f] find', '[g] git'])<cr>
+nnoremap <C-P> <cmd>call ListTelescopeCheatSheet()<cr>
