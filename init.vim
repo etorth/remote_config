@@ -32,6 +32,7 @@ call plug#begin(stdpath('data').'/plugged')
 Plug 'neovim/nvim-lspconfig'
 Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
 Plug 'Shougo/deoplete.nvim', {'do': ':UpdateRemotePlugins'}
+Plug 'Yggdroot/LeaderF', {'do': ':LeaderfInstallCExtension'}
 Plug 'WolfgangMehner/c-support'
 Plug 'jiangmiao/auto-pairs'
 Plug 'luochen1990/rainbow'
@@ -51,7 +52,6 @@ Plug 'msgpack/msgpack-python'
 Plug 'nvim-lua/popup.nvim'
 Plug 'nvim-lua/plenary.nvim'
 Plug 'liuchengxu/vim-which-key'
-Plug 'nvim-telescope/telescope.nvim'
 
 call plug#end()
 
@@ -428,61 +428,49 @@ colorscheme desertEx
 " highlight all trailing whitespaces
 highlight ExtraWhitespace ctermbg=red guibg=red
 match ExtraWhitespace /\s\+$/
-autocmd BufWinEnter *.cpp *.hpp *.C *.vim match ExtraWhitespace /\s\+$/
-autocmd InsertEnter *.cpp *.hpp *.C *.vim match ExtraWhitespace /\s\+\%#\@<!$/
-autocmd InsertLeave *.cpp *.hpp *.C *.vim match ExtraWhitespace /\s\+$/
-autocmd BufWinLeave *.cpp *.hpp *.C *.vim call clearmatches()
+autocmd BufWinEnter * match ExtraWhitespace /\s\+$/
+autocmd InsertEnter * match ExtraWhitespace /\s\+\%#\@<!$/
+autocmd InsertLeave * match ExtraWhitespace /\s\+$/
+autocmd BufWinLeave * call clearmatches()
 
 " remove all trailing whitespaces
 nnoremap <silent> <leader>rs :let _s=@/ <Bar> :%s/\s\+$//e <Bar> :let @/=_s <Bar> :nohl <Bar> :unlet _s <CR>
 
 " LSP config
+" currently use clangd, may also try ccls, check: https://github.com/neovim/nvim-lspconfig/blob/master/CONFIG.md
+"
 lua << EOF
 require'lspconfig'.clangd.setup{
     cmd = {"clangd-11", "--background-index", "--compile-commands-dir=/home/anhong/b"},
 }
 EOF
 
-" lua << EOF
-" local lspconfig = require'lspconfig'
-" lspconfig.ccls.setup {
-"     init_options = {
-"         compilationDatabaseDirectory = "/home/anhong/b";
-"         index = {
-"             threads = 0;
-"         };
-"         clang = {
-"             excludeArgs = { "-frounding-math"} ;
-"         };
-"     }
-" }
-" EOF
-
-" for telescope interface, can use float_window, currently use vim-which-key
+" for LeaderF, can define a spacevim-like interface GUI:
 " print cheat list, code from: https://www.statox.fr/posts/2021/03/breaking_habits_floating_window/
+"
+let g:Lf_ShortcutF = '<C-P>'
+let g:Lf_HideHelp = 1
+let g:Lf_UseCache = 0
+let g:Lf_UseVersionControlTool = 0
+let g:Lf_IgnoreCurrentBufferName = 1
+let g:Lf_FollowLinks = 1
+let g:Lf_ShowDevIcons = 1
+let g:Lf_PreviewInPopup = 1
+let g:Lf_WindowPosition = 'popup'
+let g:Lf_CommandMap = {'<C-J>': ['<C-N>'], '<C-K>': ['<C-P>']}
+if !empty($P_HOME)
+    let g:Lf_RootMarkers = ['.P4Config', '.P4ignore']
+    let g:Lf_WorkingDirectoryMode = 'a'
+endif
 
-" which-key config for vim-which-key
-function! SearchCmakeSourceDir() abort
-    if filereadable("CMakeCache.txt")
-        for line in readfile("CMakeCache.txt")
-            let foundDirLine = matchstr(line, '.*_SOURCE_DIR:STATIC=.*')
-            let foundDir = matchstr(foundDirLine, '/.*')
-            if !empty(foundDir)
-                execute ':Telescope find_files search_dirs=' . foundDir
-                return
-            endif
-        endfor
-    endif
-    echoerr 'Not a cmake build directory'
-endfunction
-
-let g:which_key_centered = 1
-let g:which_key_vertical = 1
-let g:which_key_map = {}
-let g:which_key_map['telescope'] = {
-            \ 'name': '+telescope',
-            \ 'f' : ['<cmd>Telescope find_files\<cr>',        'find-file-in-current-dir'],
-            \ 'g' : ['<cmd>Telescope  git_files\<cr>',        'find-file-in-current-git-repo'],
-            \ 'c' : ['<cmd>call SearchCmakeSourceDir()\<cr>', 'find-file-in-cmake-source-dir'],
-            \ }
-nnoremap <C-P> <cmd>WhichKey! g:which_key_map['telescope']<cr>
+" cmake support for LeaderF
+" find the configured source dir: https://stackoverflow.com/questions/27188786/find-source-directory-from-build-directory-in-cmake
+if filereadable("CMakeCache.txt")
+    for line in readfile("CMakeCache.txt")
+        let foundDirLine = matchstr(line, '.*_SOURCE_DIR:STATIC=.*')
+        let foundDir = matchstr(foundDirLine, '/.*')
+        if !empty(foundDir)
+            let g:Lf_WorkingDirectory = foundDir
+        endif
+    endfor
+endif
