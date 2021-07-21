@@ -50,6 +50,7 @@ Plug 'hrsh7th/vim-unmatchparen'
 Plug 'msgpack/msgpack-python'
 Plug 'nvim-lua/popup.nvim'
 Plug 'nvim-lua/plenary.nvim'
+Plug 'liuchengxu/vim-which-key'
 Plug 'nvim-telescope/telescope.nvim'
 
 call plug#end()
@@ -427,10 +428,10 @@ colorscheme desertEx
 " highlight all trailing whitespaces
 highlight ExtraWhitespace ctermbg=red guibg=red
 match ExtraWhitespace /\s\+$/
-autocmd BufWinEnter * match ExtraWhitespace /\s\+$/
-autocmd InsertEnter * match ExtraWhitespace /\s\+\%#\@<!$/
-autocmd InsertLeave * match ExtraWhitespace /\s\+$/
-autocmd BufWinLeave * call clearmatches()
+autocmd BufWinEnter *.cpp *.hpp *.C *.vim match ExtraWhitespace /\s\+$/
+autocmd InsertEnter *.cpp *.hpp *.C *.vim match ExtraWhitespace /\s\+\%#\@<!$/
+autocmd InsertLeave *.cpp *.hpp *.C *.vim match ExtraWhitespace /\s\+$/
+autocmd BufWinLeave *.cpp *.hpp *.C *.vim call clearmatches()
 
 " remove all trailing whitespaces
 nnoremap <silent> <leader>rs :let _s=@/ <Bar> :%s/\s\+$//e <Bar> :let @/=_s <Bar> :nohl <Bar> :unlet _s <CR>
@@ -457,42 +458,16 @@ EOF
 " }
 " EOF
 
-" for telescope interface
+" for telescope interface, can use float_window, currently use vim-which-key
 " print cheat list, code from: https://www.statox.fr/posts/2021/03/breaking_habits_floating_window/
 
-function! ListTelescopeCheatSheet() abort
-    let keylist = [
-                \ '[f] find',
-                \ '[g] git' ,
-                \ ]
-
-    let win_width  = 50
-    let win_height = len(keylist)
-
-    for line in keylist
-        let win_width = max([win_width, len(line)])
-    endfor
-
-    let bufid = nvim_create_buf(v:false, v:true)
-    call nvim_buf_set_lines(bufid, 0, -1, v:false, keylist)
-
-    call nvim_buf_set_keymap(bufid, 'n', '<Esc>', ':close<CR>',                        {'silent': v:true, 'nowait': v:true, 'noremap': v:true})
-    call nvim_buf_set_keymap(bufid, 'n', '<CR>' , ':close<CR>',                        {'silent': v:true, 'nowait': v:true, 'noremap': v:true})
-    call nvim_buf_set_keymap(bufid, 'n', 'f'    , ':close | Telescope find_files<CR>', {'silent': v:true, 'nowait': v:true, 'noremap': v:true})
-    call nvim_buf_set_keymap(bufid, 'n', 'g'    , ':close | Telescope  git_files<CR>', {'silent': v:true, 'nowait': v:true, 'noremap': v:true})
-
-    let ui = nvim_list_uis()[0]
-    let opts = {'relative': 'editor',
-                \ 'width' : win_width,
-                \ 'height': win_height,
-                \ 'col'   : (ui.width  / 2) - (win_width  / 2),
-                \ 'row'   : (ui.height / 2) - (win_height / 2),
-                \ 'anchor': 'NW',
-                \ 'style' : 'minimal',
-                \ 'border': 'single',
-                \ }
-
-    let winid = nvim_open_win(bufid, 1, opts)
-    call nvim_win_set_option(winid, 'winhl', 'Normal:ErrorFloat')
-endfunction
-nnoremap <C-P> <cmd>call ListTelescopeCheatSheet()<cr>
+" which-key config for vim-which-key
+let g:which_key_centered = 1
+let g:which_key_vertical = 1
+let g:which_key_map = {}
+let g:which_key_map['telescope'] = {
+            \ 'name': '+telescope',
+            \ 'f' : ['<cmd>Telescope find_files\<CR>', 'find-file-in-current-dir'],
+            \ 'g' : ['<cmd>Telescope  git_files\<CR>', 'find-file-in-current-git-repo'],
+            \ }
+nnoremap <C-P> <cmd>WhichKey! g:which_key_map['telescope']<cr>
