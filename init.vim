@@ -492,8 +492,8 @@ let g:which_key_vertical = 1
 let g:which_key_map = {}
 let g:which_key_map['LeaderF'] = {
             \ 'name': '+LeaderF',
-            \ 'f' : ['<cmd>Leaderf file\<cr>',                'current directory'],
-            \ 'g' : ['<cmd>call SearchGitRepo()\<cr>',        'git repository'],
+            \ 'f' : ['<cmd>Leaderf file\<cr>',                'current-directory'],
+            \ 'g' : ['<cmd>call SearchGitRepo()\<cr>',        'git-repository'],
             \ 'p' : ['<cmd>call SearchP4Client()\<cr>',       'perforce-client'],
             \ 'c' : ['<cmd>call SearchCmakeSourceDir()\<cr>', 'cmake-source'],
             \ }
