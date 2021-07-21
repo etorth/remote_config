@@ -445,32 +445,56 @@ require'lspconfig'.clangd.setup{
 }
 EOF
 
-" for LeaderF, can define a spacevim-like interface GUI:
-" print cheat list, code from: https://www.statox.fr/posts/2021/03/breaking_habits_floating_window/
-"
-let g:Lf_ShortcutF = '<C-P>'
+" config for LeaderF
+" gui interface is implemented by vim-which-key
+
 let g:Lf_HideHelp = 1
 let g:Lf_UseCache = 0
-let g:Lf_UseVersionControlTool = 0
-let g:Lf_IgnoreCurrentBufferName = 1
 let g:Lf_FollowLinks = 1
 let g:Lf_ShowDevIcons = 1
 let g:Lf_PreviewInPopup = 1
 let g:Lf_WindowPosition = 'popup'
 let g:Lf_CommandMap = {'<C-J>': ['<C-N>'], '<C-K>': ['<C-P>']}
-if !empty($P_HOME)
-    let g:Lf_RootMarkers = ['.P4Config', '.P4ignore']
+
+function! SearchP4Client() abort
+    let g:Lf_RootMarkers = ['.P4Config', '.P4ignore', '.p4ignore']
     let g:Lf_WorkingDirectoryMode = 'a'
-endif
+    Leaderf file
+endfunction
+
+function! SearchGitRepo() abort
+    let g:Lf_RootMarkers = ['.git']
+    let g:Lf_WorkingDirectoryMode = 'a'
+    Leaderf file
+endfunction
 
 " cmake support for LeaderF
 " find the configured source dir: https://stackoverflow.com/questions/27188786/find-source-directory-from-build-directory-in-cmake
-if filereadable("CMakeCache.txt")
-    for line in readfile("CMakeCache.txt")
-        let foundDirLine = matchstr(line, '.*_SOURCE_DIR:STATIC=.*')
-        let foundDir = matchstr(foundDirLine, '/.*')
-        if !empty(foundDir)
-            let g:Lf_WorkingDirectory = foundDir
-        endif
-    endfor
-endif
+function! SearchCmakeSourceDir() abort
+    if filereadable("CMakeCache.txt")
+        for line in readfile("CMakeCache.txt")
+            let foundDirLine = matchstr(line, '.*_SOURCE_DIR:STATIC=.*')
+            let foundDir = matchstr(foundDirLine, '/.*')
+            if !empty(foundDir)
+                execute ':Leaderf file ' . foundDir
+                return
+            endif
+        endfor
+    endif
+    Leaderf file
+endfunction
+
+" interface for LeaderF, using vim-which-key
+" if want to build one by using float-window, check: https://www.statox.fr/posts/2021/03/breaking_habits_floating_window/
+"
+let g:which_key_centered = 1
+let g:which_key_vertical = 1
+let g:which_key_map = {}
+let g:which_key_map['LeaderF'] = {
+            \ 'name': '+LeaderF',
+            \ 'f' : ['<cmd>Leaderf file\<cr>',                'current directory'],
+            \ 'g' : ['<cmd>call SearchGitRepo()\<cr>',        'git repository'],
+            \ 'p' : ['<cmd>call SearchP4Client()\<cr>',       'perforce-client'],
+            \ 'c' : ['<cmd>call SearchCmakeSourceDir()\<cr>', 'cmake-source'],
+            \ }
+nnoremap <C-P> <cmd>WhichKey! g:which_key_map['LeaderF']<cr>
