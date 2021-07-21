@@ -462,12 +462,27 @@ EOF
 " print cheat list, code from: https://www.statox.fr/posts/2021/03/breaking_habits_floating_window/
 
 " which-key config for vim-which-key
+function! SearchCmakeSourceDir() abort
+    if filereadable("CMakeCache.txt")
+        for line in readfile("CMakeCache.txt")
+            let foundDirLine = matchstr(line, '.*_SOURCE_DIR:STATIC=.*')
+            let foundDir = matchstr(foundDirLine, '/.*')
+            if !empty(foundDir)
+                execute ':Telescope find_files search_dirs=' . foundDir
+                return
+            endif
+        endfor
+    endif
+    echoerr 'Not a cmake build directory'
+endfunction
+
 let g:which_key_centered = 1
 let g:which_key_vertical = 1
 let g:which_key_map = {}
 let g:which_key_map['telescope'] = {
             \ 'name': '+telescope',
-            \ 'f' : ['<cmd>Telescope find_files\<CR>', 'find-file-in-current-dir'],
-            \ 'g' : ['<cmd>Telescope  git_files\<CR>', 'find-file-in-current-git-repo'],
+            \ 'f' : ['<cmd>Telescope find_files\<cr>',        'find-file-in-current-dir'],
+            \ 'g' : ['<cmd>Telescope  git_files\<cr>',        'find-file-in-current-git-repo'],
+            \ 'c' : ['<cmd>call SearchCmakeSourceDir()\<cr>', 'find-file-in-cmake-source-dir'],
             \ }
 nnoremap <C-P> <cmd>WhichKey! g:which_key_map['telescope']<cr>
