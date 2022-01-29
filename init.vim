@@ -25,7 +25,8 @@ endfunction
 "     https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim'
 
 " Specify a directory for plugins
-call plug#begin(stdpath('data').'/plugged')
+" call plug#begin(stdpath('data').'/plugged')
+call plug#begin('/home/anhong/.vim')
 
 " Make sure you use single quotes
 
