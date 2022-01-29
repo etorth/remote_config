@@ -1,0 +1,12 @@
+let g:netrw_dirhistmax  =10
+let g:netrw_dirhistcnt =4
+let g:netrw_dirhist_4='/lan/cva/HSVhw8/work/users/anhong/design/daily/2021.07.08.11.33.34.135745692/comp/2512087'
+let g:netrw_dirhist_3='/et3mach'
+let g:netrw_dirhist_2='/'
+let g:netrw_dirhist_1='/lan/cva/HSVhw_scratch3/crahul/SAP_TEST/SAP_ICE_Z1/ice_flow/run_longDCC_1.session/tmp'
+let g:netrw_dirhist_0='/lan/cva/HSVhw_scratch3/crahul/SAP_TEST/SAP_ICE_Z1/ice_flow/run_longDCC_1.session'
+let g:netrw_dirhist_9='/lan/cva/HSVhw8/work/users/anhong/design/daily/2021.06.27.23.08.18.478013065/run_122.session'
+let g:netrw_dirhist_8='/grid/cva/p4/anhong/cxx_main_vxe/ap/ET_Compiler/et6confg/src'
+let g:netrw_dirhist_7='/lan/cva/scalability/ple/run_force_value/RUN_gsantos_2021-04-17_04-48-16_310_3/JOB_65_gsantos_2021-04-17_04-48-16_394/TASK_65_21H1_WXEV21.00.050.s000_gsantos_2021-04-17_04-48-16_987'
+let g:netrw_dirhist_6='/lan/cva/bldg11_eng/shujuan/ap2/reactiveLoopBack_12ch_12th_1iter/src'
+let g:netrw_dirhist_5='/lan/cva/HSVhw8/work/users/anhong/design/cnt4bit'

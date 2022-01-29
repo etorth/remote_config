@@ -29,7 +29,7 @@ call plug#begin(stdpath('data').'/plugged')
 
 " Make sure you use single quotes
 
-Plug 'neovim/nvim-lspconfig'
+" Plug 'neovim/nvim-lspconfig'
 Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
 Plug 'Shougo/deoplete.nvim', {'do': ':UpdateRemotePlugins'}
 Plug 'Yggdroot/LeaderF', {'do': ':LeaderfInstallCExtension'}
@@ -37,8 +37,8 @@ Plug 'WolfgangMehner/c-support'
 Plug 'jiangmiao/auto-pairs'
 Plug 'luochen1990/rainbow'
 Plug 'mbbill/desertEx'
-Plug 'vim-airline/vim-airline'
-Plug 'vim-airline/vim-airline-themes'
+" Plug 'vim-airline/vim-airline'
+" Plug 'vim-airline/vim-airline-themes'
 Plug 'sukima/xmledit'
 Plug 'tomtom/tcomment_vim'
 Plug 'vim-scripts/AnsiEsc.vim'
@@ -52,6 +52,7 @@ Plug 'msgpack/msgpack-python'
 Plug 'nvim-lua/popup.nvim'
 Plug 'nvim-lua/plenary.nvim'
 Plug 'liuchengxu/vim-which-key'
+Plug 'dracula/vim', {'as': 'dracula'}
 
 call plug#end()
 
@@ -422,7 +423,8 @@ endif
 let g:alternateExtensions_C = "h,hpp,H,HPP"
 let g:alternateExtensions_h = "c,cpp,cxx,cc,CC,C,CPP,CXX"
 
-colorscheme desertEx
+" colorscheme desertEx
+colorscheme dracula
 
 " Trailing whitespaces:
 " highlight all trailing whitespaces
@@ -439,17 +441,17 @@ nnoremap <silent> <leader>rs :let _s=@/ <Bar> :%s/\s\+$//e <Bar> :let @/=_s <Bar
 " LSP config
 " currently use clangd, may also try ccls, check: https://github.com/neovim/nvim-lspconfig/blob/master/CONFIG.md
 "
-lua << EOF
-require'lspconfig'.clangd.setup{
-    cmd = {"clangd-11", "--background-index", "--compile-commands-dir=/home/anhong/b"},
-}
-EOF
+" lua << EOF
+" require'lspconfig'.clangd.setup{
+"     cmd = {"clangd-11", "--background-index", "--compile-commands-dir=/home/anhong/b"},
+" }
+" EOF
 
 " config for LeaderF
 " gui interface is implemented by vim-which-key
 
 let g:Lf_HideHelp = 1
-let g:Lf_UseCache = 0
+let g:Lf_UseCache = 1
 let g:Lf_FollowLinks = 1
 let g:Lf_ShowDevIcons = 0
 let g:Lf_PreviewInPopup = 1
