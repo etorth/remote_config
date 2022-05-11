@@ -38,6 +38,8 @@ Plug 'WolfgangMehner/c-support'
 Plug 'jiangmiao/auto-pairs'
 Plug 'luochen1990/rainbow'
 Plug 'mbbill/desertEx'
+Plug 'farmergreg/vim-lastplace'
+" Plug 'lukas-reineke/indent-blankline.nvim'
 " Plug 'vim-airline/vim-airline'
 " Plug 'vim-airline/vim-airline-themes'
 Plug 'sukima/xmledit'
@@ -75,6 +77,8 @@ set noerrorbells
 set novisualbell
 set visualbell
 set hlsearch
+set cursorline
+set cursorcolumn
 
 set fileformat    =unix
 set tabstop       =4
@@ -140,14 +144,16 @@ autocmd BufEnter *.fl  set filetype=cpp
 autocmd BufEnter *.qel set filetype=tcl
 autocmd BufEnter *.xel set filetype=tcl
 
-function! BufReadPostFunc()
-    if line("'\"") > 0 && line("'\"") <= line("$")
-        exe "norm '\""
-    else
-        exe "norm $"
-    endif
-endfunction
-autocmd BufReadPost * call BufReadPostFunc()
+" jump to last edit line & column
+" now using farmergreg/vim-lastplace alternatively
+" function! BufReadPostFunc()
+"     if line("'\"") > 0 && line("'\"") <= line("$")
+"         exe "norm '\""
+"     else
+"         exe "norm $"
+"     endif
+" endfunction
+" autocmd BufReadPost * call BufReadPostFunc()
 
 function! CreateCscopeDB()
     let s:strPath1 = expand("$PWD")
@@ -310,6 +316,17 @@ else
     execute ":set undodir=".g:UndoFileDir
     set undofile
 endif
+
+function! Tailf()
+    if (len(expand('%:p')) > 0) && (&modified == 0)
+        e
+    endif
+
+    norm G
+    norm 0
+    redraw
+endfunction
+map <silent> T <ESC>:call Tailf()<CR><ESC>
 
 function! s:AddCscopeDB()
     let s:CscopeDBName = expand("$HOME")."/.cscope_db/cscope.out"
