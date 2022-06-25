@@ -12,6 +12,7 @@ function! s:IsCDNSHost()
     return s:IsCDNSVMHost()
                 \ || hostname() =~ "hsv-sc.*$"
                 \ || hostname() =~ "hsv-sw.*$"
+                \ || hostname() =~ "hsv-bw.*$"
                 \ || hostname() =~ "cva-mp.*$"
                 \ || hostname() =~ "cva-xeon.*$"
 endfunction
