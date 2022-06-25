@@ -279,8 +279,10 @@ else
 endif
 
 " for Copilot
-let g:copilot_node_command =
-            \ "/grid/common/pkgs/node/v16.15.0/bin/node"
+if s:IsCDNSHost()
+    let g:copilot_node_command =
+                \ "/grid/common/pkgs/node/v16.15.0/bin/node"
+endif
 
 function! CreateCrossLink()
     let s:strFileName = expand("%:p")
