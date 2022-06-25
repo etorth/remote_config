@@ -40,8 +40,8 @@ Plug 'luochen1990/rainbow'
 Plug 'mbbill/desertEx'
 Plug 'farmergreg/vim-lastplace'
 " Plug 'lukas-reineke/indent-blankline.nvim'
-" Plug 'vim-airline/vim-airline'
-" Plug 'vim-airline/vim-airline-themes'
+Plug 'vim-airline/vim-airline'
+Plug 'vim-airline/vim-airline-themes'
 Plug 'sukima/xmledit'
 Plug 'tomtom/tcomment_vim'
 Plug 'vim-scripts/AnsiEsc.vim'
@@ -57,6 +57,7 @@ Plug 'nvim-lua/plenary.nvim'
 Plug 'liuchengxu/vim-which-key'
 Plug 'chrisbra/csv.vim'
 Plug 'dracula/vim', {'as': 'dracula'}
+Plug 'github/copilot.vim'
 
 call plug#end()
 
@@ -276,6 +277,10 @@ else
     execute ":set undodir=".g:UndoFileDir
     set undofile
 endif
+
+" for Copilot
+let g:copilot_node_command =
+            \ "/grid/common/pkgs/node/v16.15.0/bin/node"
 
 function! CreateCrossLink()
     let s:strFileName = expand("%:p")
