@@ -285,6 +285,9 @@ if s:IsCDNSHost()
                 \ "/grid/common/pkgs/node/v16.15.0/bin/node"
 endif
 
+imap <silent><script><expr> <C-n> copilot#Accept("")
+let g:copilot_no_tab_map = v:true
+
 function! CreateCrossLink()
     let s:strFileName = expand("%:p")
     if getftype(s:strFileName) == "file" && filereadable(s:strFileName) && filewritable(s:strFileName)
