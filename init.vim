@@ -274,7 +274,7 @@ if s:IsCDNSHost()
     set t_kr        =OC
     set t_kl        =OD
 else
-    let g:UndoFileDir="$HOME"."/Dropbox/.vimundo/".hostname()
+    let g:UndoFileDir="$HOME"."/.vimundo/".hostname()
     execute ":set undodir=".g:UndoFileDir
     set undofile
 endif
