@@ -323,7 +323,7 @@ if(hostname() == "vlsj-anhong" || hostname() =~ "hsv-sc.*$" || hostname() =~ "cv
     let &makeprg="gmake -j 32 debug-install SYSTRG=64bit"
 else
     let &makeprg="make -j 4"
-    let g:UndoFileDir="$HOME"."/Dropbox/.vimundo/".hostname()
+    let g:UndoFileDir="$HOME"."/.vimundo/".hostname()
     execute ":set undodir=".g:UndoFileDir
     set undofile
 endif
