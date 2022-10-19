@@ -32,18 +32,19 @@ call plug#begin('/home/anhong/.vim')
 " Make sure you use single quotes
 
 " Plug 'neovim/nvim-lspconfig'
-Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
+" Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
 Plug 'Shougo/deoplete.nvim', {'do': ':UpdateRemotePlugins'}
 Plug 'Yggdroot/LeaderF', {'do': ':LeaderfInstallCExtension'}
-Plug 'WolfgangMehner/c-support'
-Plug 'jiangmiao/auto-pairs'
+" Plug 'WolfgangMehner/c-support'
+Plug 'dstein64/vim-startuptime'
+Plug 'godlygeek/tabular'
+Plug 'windwp/nvim-autopairs'
 Plug 'luochen1990/rainbow'
-Plug 'mbbill/desertEx'
 Plug 'farmergreg/vim-lastplace'
-" Plug 'lukas-reineke/indent-blankline.nvim'
 Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
 Plug 'sukima/xmledit'
+Plug 'etorth/diary.vim'
 Plug 'tomtom/tcomment_vim'
 Plug 'vim-scripts/AnsiEsc.vim'
 Plug 'vim-scripts/VisIncr'
@@ -57,13 +58,12 @@ Plug 'nvim-lua/popup.nvim'
 Plug 'nvim-lua/plenary.nvim'
 Plug 'liuchengxu/vim-which-key'
 Plug 'chrisbra/csv.vim'
-Plug 'dracula/vim', {'as': 'dracula'}
 Plug 'github/copilot.vim'
+Plug 'dracula/vim', {'as': 'dracula'}
 
 call plug#end()
 
 set number
-set wrap
 set autoindent
 set noswapfile
 set cindent
@@ -134,6 +134,13 @@ autocmd BufEnter *.hpp set foldmethod=indent
 autocmd BufEnter *.c   set foldmethod=indent
 autocmd BufEnter *.h   set foldmethod=indent
 autocmd BufEnter *.sh  set foldmethod=indent
+
+autocmd BufEnter *.hpp set nowrap
+autocmd BufEnter *.h   set nowrap
+autocmd BufEnter *.cpp set nowrap
+autocmd BufEnter *.c   set nowrap
+autocmd BufEnter *.C   set nowrap
+autocmd BufEnter *.sh  set nowrap
 
 syntax      on
 filetype    plugin on
@@ -247,8 +254,9 @@ endif
 autocmd BufRead,BufNewFile  *.h  set filetype=cpp
 let g:C_SourceCodeExtensions  = 'h c cc cp cxx cpp CPP c++ C i ii'
 
-" autopair config
-let g:AutoPairsFlyMode = 0
+lua << EOF
+require("nvim-autopairs").setup {}
+EOF
 
 if has("conceal")
     set conceallevel=0
@@ -453,7 +461,6 @@ endif
 let g:alternateExtensions_C = "h,hpp,H,HPP"
 let g:alternateExtensions_h = "c,cpp,cxx,cc,CC,C,CPP,CXX"
 
-" colorscheme desertEx
 colorscheme dracula
 
 " Trailing whitespaces:
