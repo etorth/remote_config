@@ -461,6 +461,7 @@ endif
 let g:alternateExtensions_C = "h,hpp,H,HPP"
 let g:alternateExtensions_h = "c,cpp,cxx,cc,CC,C,CPP,CXX"
 
+let g:dracula_high_contrast_diff = 1
 colorscheme dracula
 
 " Trailing whitespaces:
