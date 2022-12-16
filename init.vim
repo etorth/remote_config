@@ -248,14 +248,14 @@ function! TabSpace2()
 endfunction
 command! TabSpace2 :call TabSpace2()
 
-function! DiffWithSaved()
+function! DiffWithSavedFunc()
     let l:filetype=&ft
     diffthis
     vnew | read # | normal! 1Gdd
     diffthis
     execute "setlocal bt=nofile bh=wipe nobl noswf ro ft=" . l:filetype
 endfunction
-command! DiffOriginal call DiffWithSaved()
+command! DiffWithSaved call DiffWithSavedFunc()
 
 " highlight current line with cursor *permanently*
 let g:permanent_hightlighting_selected_line = 0
