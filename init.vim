@@ -1,5 +1,9 @@
-function! s:IsWinOS()
+function! s:IsWindows()
     return has("win32") || has("win64") || has("win32unix")
+endfunction
+
+function! s:IsLinux()
+    return has("unix") || !s:IsWindows()
 endfunction
 
 function! s:IsCDNSVMHost()
@@ -22,6 +26,14 @@ function! s:IsWSLHost()
     return hostname() =~ "PC-ANHONG2"
 endfunction
 
+function! s:IsP4Enabled()
+    return !empty($P_HOME)
+endfunction
+
+if s:IsWindows()
+    let g:python3_host_prog = 'C:\Users\anhong\AppData\Local\Programs\Python\Python311\python.exe'
+endif
+
 " ================
 " vim-plug setup
 " ================
@@ -31,8 +43,7 @@ endfunction
 "     https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim'
 
 " Specify a directory for plugins
-" call plug#begin(stdpath('data').'/plugged')
-call plug#begin('/home/anhong/.vim')
+call plug#begin(stdpath('data').'/plugged')
 
 " Make sure you use single quotes
 
@@ -160,106 +171,7 @@ autocmd BufEnter *.fl  set filetype=cpp
 autocmd BufEnter *.qel set filetype=tcl
 autocmd BufEnter *.xel set filetype=tcl
 
-" jump to last edit line & column
-" now using farmergreg/vim-lastplace alternatively
-" function! BufReadPostFunc()
-"     if line("'\"") > 0 && line("'\"") <= line("$")
-"         exe "norm '\""
-"     else
-"         exe "norm $"
-"     endif
-" endfunction
-" autocmd BufReadPost * call BufReadPostFunc()
-
-function! CreateCscopeDB()
-    let s:strPath1 = expand("$PWD")
-    let s:strPath2 = expand("%:p:h")
-    let s:nRes1 = match(s:strPath1, s:strPath2)
-    let s:nRes2 = match(s:strPath2, s:strPath1)
-
-    let s:bFindSub = 0
-    let s:strRootPath = s:strPath1
-    if s:nRes1 == 0 || s:nRes2 == 0
-        let s:bFindSub = 1
-        if strlen(s:strPath1) > strlen(s:strPath2)
-            let s:strRootPath = s:strPath2
-        endif
-    endif
-
-    " this fucntion generate cscope db for current file
-    if s:bFindSub == 0
-        echoerr "file path doesn't agree with working path"
-        return
-    endif
-
-    let s:Command = "find ".s:strRootPath
-    let s:Command = s:Command." -name '*.cpp' "
-    let s:Command = s:Command." -o "
-    let s:Command = s:Command." -name '*.cxx' "
-    let s:Command = s:Command." -o "
-    let s:Command = s:Command." -name '*.CPP' "
-    let s:Command = s:Command." -o "
-    let s:Command = s:Command." -name '*.CXX' "
-    let s:Command = s:Command." -o "
-    let s:Command = s:Command." -name '*.C' "
-    let s:Command = s:Command." -o "
-    let s:Command = s:Command." -name '*.c' "
-    let s:Command = s:Command." -o "
-    let s:Command = s:Command." -name '*.hpp' "
-    let s:Command = s:Command." -o "
-    let s:Command = s:Command." -name '*.HPP' "
-    let s:Command = s:Command." -o "
-    let s:Command = s:Command." -name '*.h' "
-
-    let s:Command = s:Command." > ".expand("$HOME")."/.cscope_db/cscope.files"
-
-    execute "! ".s:Command
-    execute "! cd ".expand("$HOME")."/.cscope_db && cscope -Rbq -i cscope.files && cd - > /dev/null"
-
-    let s:CscopeCreatedDB = expand("$HOME")."/.cscope_db/cscope.out"
-    if filereadable(s:CscopeCreatedDB)
-        execute "silent cs add ".s:CscopeCreatedDB
-    endif
-endfunction
-
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" cscope setting
-" cscope -Rbq
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-if (has("cscope") && !has("win32") && !has("win64"))
-    " Use both cscope and ctag
-    set cscopetag
-    " Show msg when cscope db added
-    set cscopeverbose
-    " Use tags for definition search first
-    set cscopetagorder=1
-    " Use quickfix window to show cscope results
-    set cscopequickfix=s-,c-,d-,i-,t-,e-
-
-    set csprg=/usr/bin/cscope
-    set csto=1
-    set cst
-    set nocsverb
-    " add any database in current directory
-    " let s:CscopeDBName = expand("$PWD")."/.cscope_db/cscope.out"
-    " if filereadable(s:CscopeDBName)
-    "     execute "cs add ".s:CscopeDBName
-    " endif
-    set csverb
-
-    nmap <C-\> :call CreateCscopeDB()<CR><CR>
-    nmap <C-\>s :cs find s <C-R>=expand("<cword>")<CR><CR>
-    nmap <C-\>g :cs find g <C-R>=expand("<cword>")<CR><CR>
-    nmap <C-\>c :cs find c <C-R>=expand("<cword>")<CR><CR>
-    nmap <C-\>t :cs find t <C-R>=expand("<cword>")<CR><CR>
-    nmap <C-\>e :cs find e <C-R>=expand("<cword>")<CR><CR>
-    nmap <C-\>f :cs find f <C-R>=expand("<cfile>")<CR><CR>
-    nmap <C-\>i :cs find i ^<C-R>=expand("<cfile>")<CR>$<CR>
-    nmap <C-\>d :cs find d <C-R>=expand("<cword>")<CR><CR>
-endif
-
 autocmd BufRead,BufNewFile  *.h  set filetype=cpp
-let g:C_SourceCodeExtensions  = 'h c cc cp cxx cpp CPP c++ C i ii'
 
 lua << EOF
 require("nvim-autopairs").setup {}
@@ -277,9 +189,8 @@ highlight FoldColumn guibg=darkgrey guifg=white
 " set to 0 if you want to enable it later via :RainbowToggle
 let g:rainbow_active = 1
 
-if s:IsCDNSHost()
-    let g:UndoFileDir="$HOME"."/.vimundo"
-    execute ":set undodir=".g:UndoFileDir
+if s:IsLinux()
+    set undodir=$HOME/.vimundo
     set undofile
 
     set t_Co        =256
@@ -288,13 +199,11 @@ if s:IsCDNSHost()
     set t_ku        =OB
     set t_kr        =OC
     set t_kl        =OD
-else
-    let g:UndoFileDir="$HOME"."/.vimundo/".hostname()
-    execute ":set undodir=".g:UndoFileDir
+elseif s:IsWindows()
+    set undodir=$HomePath/.vimundo
     set undofile
 endif
 
-" for Copilot
 if s:IsWSLHost()
     let g:copilot_node_command = "/home/anhong/node-v17.9.1-linux-x64/bin/node"
 elseif s:IsCDNSHost()
@@ -306,47 +215,13 @@ endif
 imap <silent><script><expr> <C-n> copilot#Accept("")
 let g:copilot_no_tab_map = v:true
 
-function! CreateCrossLink()
-    let s:strFileName = expand("%:p")
-    if getftype(s:strFileName) == "file" && filereadable(s:strFileName) && filewritable(s:strFileName)
-        let s:strNiceFileName = substitute(substitute(s:strFileName, "/", ".", "g"), "\\\\", ".", "g")
-        " I have no idea why it's so slow
-        call system("rm -rf $HOME/.cross_link && mkdir $HOME/.cross_link")
-        call system("ln -s ".s:strFileName." $HOME/.cross_link/cross.".s:strNiceFileName)
-
-        echo "symbol link created: ".expand("$HOME/.cross_link/").s:strNiceFileName
-    else
-        echoerr "can't create cross link file"
-    endif
-endfunction
-
-if(hostname() == "vlsj-anhong" || hostname() =~ "hsv-sc.*$" || hostname() =~ "cva-xeon.*$" || hostname() =~ "hsv-sw.*$")
-    let g:UndoFileDir="$HOME"."/.vimundo"
-    execute ":set undodir=".g:UndoFileDir
-    set undofile
-
-    set t_Co        =256
-    set tabstop     =8
-    set t_kd        =OA
-    set t_ku        =OB
-    set t_kr        =OC
-    set t_kl        =OD
-
-    " autocmd BufReadPre * call CreateCrossLink()
-    " autocmd BufNewFile * call CreateCrossLink()
-    command! CrossLink call CreateCrossLink()
-
-    " set makeprg=clearmake\ SYSTRG=64bit\ debug_install
-    " let &makeprg="clearmake SYSTRG=64bit debug_install"
+if s:IsP4Enabled()
     let &makeprg="gmake -j 32 debug-install SYSTRG=64bit"
 else
     let &makeprg="make -j 4"
-    let g:UndoFileDir="$HOME"."/.vimundo/".hostname()
-    execute ":set undodir=".g:UndoFileDir
-    set undofile
 endif
 
-function! Tailf()
+function! s:Tailf()
     if (len(expand('%:p')) > 0) && (&modified == 0)
         e
     endif
@@ -355,15 +230,7 @@ function! Tailf()
     norm 0
     redraw
 endfunction
-map <silent> T <ESC>:call Tailf()<CR><ESC>
-
-function! s:AddCscopeDB()
-    let s:CscopeDBName = expand("$HOME")."/.cscope_db/cscope.out"
-    if filereadable(s:CscopeDBName)
-        :execute ":cs add ".s:CscopeDBName
-    endif
-endfunction
-command! CSAddDB :call s:AddCscopeDB()
+map <silent> T <ESC>:call s:Tailf()<CR><ESC>
 
 function! s:IgnoreSpaceDiff()
     if &diff
@@ -381,79 +248,72 @@ function! s:TabSpace2()
 endfunction
 command! TabSpace2 :call s:TabSpace2()
 
-" self diff
 function! s:DiffWithSaved()
-    let filetype=&ft
+    let l:filetype=&ft
     diffthis
-    vnew | r # | normal! 1Gdd
+    vnew | read # | normal! 1Gdd
     diffthis
-    exe "setlocal bt=nofile bh=wipe nobl noswf ro ft=" . filetype
+    execute "setlocal bt=nofile bh=wipe nobl noswf ro ft=" . l:filetype
 endfunction
-com! DiffS call s:DiffWithSaved()
+command! DiffOriginal call s:DiffWithSaved()
 
 " highlight current line with cursor *permanently*
-let g:permanent_hightlighting = 0
+let g:permanent_hightlighting_selected_line = 0
 let g:permanent_highlight_line = 0
-function! PermanentHighlightingFunc()
+function! s:PermanentHighlightingFunc()
     " 1. exit current mode back to normal mode
     "    currently only visual mode can get here
     " :norm \<ESC>
 
     " 2. setup to select current line permanently
-    if g:permanent_hightlighting == 1 && g:permanent_highlight_line == line('.')
+    if g:permanent_hightlighting_selected_line == 1 && g:permanent_highlight_line == line('.')
         execute ':match'
-        let g:permanent_hightlighting = 0
+        let g:permanent_hightlighting_selected_line = 0
         let g:permanent_highlight_line = 0
     else
         execute ':match Search /\%'.line('.').'l/'
-        let g:permanent_hightlighting = 1
+        let g:permanent_hightlighting_selected_line = 1
         let g:permanent_highlight_line = line('.')
     endif
 endfunction
-xnoremap <silent> <CR> <ESC>:call PermanentHighlightingFunc()<CR>
+xnoremap <silent> <CR> <ESC>:call s:PermanentHighlightingFunc()<CR>
 
 " use space key to highlight pattern under the cursor currently
-let g:highlighting = 0
-function! HighlightingFunc()
+let g:highlighting_under_cursor = 0
+function! s:HighlightingFunc()
 
-    if g:highlighting == 1 && @/ =~ '^\\<'.expand('<cword>').'\\>$'
-        let g:highlighting = 0
+    if g:highlighting_under_cursor == 1 && @/ =~ '^\\<'.expand('<cword>').'\\>$'
+        let g:highlighting_under_cursor = 0
         return ":silent nohlsearch\<CR>"
     endif
 
-    " if g:highlighting == 1
-    "     let g:highlighting = 0
+    " if g:highlighting_under_cursor == 1
+    "     let g:highlighting_under_cursor = 0
     "     let @/ = ""
     "     return ":silent set nohlsearch\<CR>"
     " endif
 
     let @/ = '\<'.expand('<cword>').'\>'
-    let g:highlighting = 1
+    let g:highlighting_under_cursor = 1
     return ":silent set hlsearch\<CR>"
 endfunction
-nnoremap <silent> <expr> <SPACE> HighlightingFunc()
-
-" for fugitive Gdiff
-" set diffopt+=vertical
-if !exists(":Gdiffoff")
-    command Gdiffoff diffoff | q | Gedit
-endif
+nnoremap <silent> <expr> <SPACE> s:HighlightingFunc()
 
 " use cdpath to edit file
 " edit file can now seach path list in $VIM_CDPATH
-function! FindInCDPath(name)
-    let path_backup = &path
-    if empty(&path)
-        let &path = join(split($VIM_CDPATH), ',')
-    else
-        let &path = &path . "," . join(split($VIM_CDPATH), ',')
-    endif
-
-    setlocal bufhidden=wipe
-    execute 'silent keepalt find ' . fnameescape(a:name)
-    let &path = path_backup
-    set bufhidden<
-endfunction
+" function! s:FindInCDPath(name)
+"     let path_backup = &path
+"     if empty(&path)
+"         let &path = join(split($VIM_CDPATH), ',')
+"     else
+"         let &path = &path . "," . join(split($VIM_CDPATH), ',')
+"     endif
+"
+"     setlocal bufhidden=wipe
+"     execute 'silent keepalt find ' . fnameescape(a:name)
+"     let &path = path_backup
+"     set bufhidden<
+" endfunction
 
 if s:IsCDNSVMHost()
     " don't use deoplete
