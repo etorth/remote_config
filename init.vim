@@ -1,19 +1,19 @@
-function! s:IsWindows()
+function! IsWindows()
     return has("win32") || has("win64") || has("win32unix")
 endfunction
 
-function! s:IsLinux()
-    return has("unix") || !s:IsWindows()
+function! IsLinux()
+    return has("unix") || !IsWindows()
 endfunction
 
-function! s:IsCDNSVMHost()
+function! IsCDNSVMHost()
     return hostname() == "cva-mp86"
                 \ || hostname() == "vlsj-anhong"
                 \ || hostname() == "sjcvl-anhong"
 endfunction
 
-function! s:IsCDNSHost()
-    return s:IsCDNSVMHost()
+function! IsCDNSHost()
+    return IsCDNSVMHost()
                 \ || hostname() =~ "hsv-sc.*$"
                 \ || hostname() =~ "hsv-sw.*$"
                 \ || hostname() =~ "hsv-bw.*$"
@@ -22,15 +22,15 @@ function! s:IsCDNSHost()
                 \ || hostname() =~ "cva-xeon.*$"
 endfunction
 
-function! s:IsWSLHost()
+function! IsWSLHost()
     return hostname() =~ "PC-ANHONG2"
 endfunction
 
-function! s:IsP4Enabled()
+function! IsP4Enabled()
     return !empty($P_HOME)
 endfunction
 
-if s:IsWindows()
+if IsWindows()
     let g:python3_host_prog = 'C:\Users\anhong\AppData\Local\Programs\Python\Python311\python.exe'
 endif
 
@@ -189,7 +189,7 @@ highlight FoldColumn guibg=darkgrey guifg=white
 " set to 0 if you want to enable it later via :RainbowToggle
 let g:rainbow_active = 1
 
-if s:IsLinux()
+if IsLinux()
     set undodir=$HOME/.vimundo
     set undofile
 
@@ -199,14 +199,14 @@ if s:IsLinux()
     set t_ku        =OB
     set t_kr        =OC
     set t_kl        =OD
-elseif s:IsWindows()
+elseif IsWindows()
     set undodir=$HomePath/.vimundo
     set undofile
 endif
 
-if s:IsWSLHost()
+if IsWSLHost()
     let g:copilot_node_command = "/home/anhong/node-v17.9.1-linux-x64/bin/node"
-elseif s:IsCDNSHost()
+elseif IsCDNSHost()
     let g:copilot_node_command = "/grid/common/pkgs/node/v16.15.0/bin/node"
 else
     let g:copilot_node_command = "C:\\Program\ Files\\nodejs\\node.exe"
@@ -215,13 +215,13 @@ endif
 imap <silent><script><expr> <C-n> copilot#Accept("")
 let g:copilot_no_tab_map = v:true
 
-if s:IsP4Enabled()
+if IsP4Enabled()
     let &makeprg="gmake -j 32 debug-install SYSTRG=64bit"
 else
     let &makeprg="make -j 4"
 endif
 
-function! s:Tailf()
+function! Tailf()
     if (len(expand('%:p')) > 0) && (&modified == 0)
         e
     endif
@@ -230,37 +230,37 @@ function! s:Tailf()
     norm 0
     redraw
 endfunction
-map <silent> T <ESC>:call s:Tailf()<CR><ESC>
+map <silent> T <ESC>:call Tailf()<CR><ESC>
 
-function! s:IgnoreSpaceDiff()
+function! IgnoreSpaceDiff()
     if &diff
         set diffopt+=iwhite
     else
         echohl ErrorMsg | echo "Not in diff mode!" | echohl None
     endif
 endfunction
-command! IgnoreSpaceDiff :call s:IgnoreSpaceDiff()
+command! IgnoreSpaceDiff :call IgnoreSpaceDiff()
 
-function! s:TabSpace2()
+function! TabSpace2()
     set tabstop=2
     set softtabstop=2
     set shiftwidth=2
 endfunction
-command! TabSpace2 :call s:TabSpace2()
+command! TabSpace2 :call TabSpace2()
 
-function! s:DiffWithSaved()
+function! DiffWithSaved()
     let l:filetype=&ft
     diffthis
     vnew | read # | normal! 1Gdd
     diffthis
     execute "setlocal bt=nofile bh=wipe nobl noswf ro ft=" . l:filetype
 endfunction
-command! DiffOriginal call s:DiffWithSaved()
+command! DiffOriginal call DiffWithSaved()
 
 " highlight current line with cursor *permanently*
 let g:permanent_hightlighting_selected_line = 0
 let g:permanent_highlight_line = 0
-function! s:PermanentHighlightingFunc()
+function! PermanentHighlightingFunc()
     " 1. exit current mode back to normal mode
     "    currently only visual mode can get here
     " :norm \<ESC>
@@ -276,11 +276,11 @@ function! s:PermanentHighlightingFunc()
         let g:permanent_highlight_line = line('.')
     endif
 endfunction
-xnoremap <silent> <CR> <ESC>:call s:PermanentHighlightingFunc()<CR>
+xnoremap <silent> <CR> <ESC>:call PermanentHighlightingFunc()<CR>
 
 " use space key to highlight pattern under the cursor currently
 let g:highlighting_under_cursor = 0
-function! s:HighlightingFunc()
+function! HighlightingUnderCursor()
 
     if g:highlighting_under_cursor == 1 && @/ =~ '^\\<'.expand('<cword>').'\\>$'
         let g:highlighting_under_cursor = 0
@@ -297,11 +297,11 @@ function! s:HighlightingFunc()
     let g:highlighting_under_cursor = 1
     return ":silent set hlsearch\<CR>"
 endfunction
-nnoremap <silent> <expr> <SPACE> s:HighlightingFunc()
+nnoremap <silent> <expr> <SPACE> HighlightingUnderCursor()
 
 " use cdpath to edit file
 " edit file can now seach path list in $VIM_CDPATH
-" function! s:FindInCDPath(name)
+" function! FindInCDPath(name)
 "     let path_backup = &path
 "     if empty(&path)
 "         let &path = join(split($VIM_CDPATH), ',')
@@ -315,7 +315,7 @@ nnoremap <silent> <expr> <SPACE> s:HighlightingFunc()
 "     set bufhidden<
 " endfunction
 
-if s:IsCDNSVMHost()
+if IsCDNSVMHost()
     " don't use deoplete
     " no python support for basic version
 else
