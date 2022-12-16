@@ -14,7 +14,12 @@ function! s:IsCDNSHost()
                 \ || hostname() =~ "hsv-sw.*$"
                 \ || hostname() =~ "hsv-bw.*$"
                 \ || hostname() =~ "cva-mp.*$"
+                \ || hostname() =~ "hsv-smd.*$"
                 \ || hostname() =~ "cva-xeon.*$"
+endfunction
+
+function! s:IsWSLHost()
+    return hostname() =~ "PC-ANHONG2"
 endfunction
 
 " ================
@@ -36,6 +41,7 @@ call plug#begin('/home/anhong/.vim')
 Plug 'Shougo/deoplete.nvim', {'do': ':UpdateRemotePlugins'}
 Plug 'Yggdroot/LeaderF', {'do': ':LeaderfInstallCExtension'}
 " Plug 'WolfgangMehner/c-support'
+" Plug 'sbdchd/neoformat'
 Plug 'dstein64/vim-startuptime'
 Plug 'godlygeek/tabular'
 Plug 'windwp/nvim-autopairs'
@@ -99,6 +105,7 @@ set scrolloff     =9999
 set sidescrolloff =9999
 set sidescroll    =1
 set tags         +=./tags
+set spelllang    +=cjk
 
 nmap \r             :.-1r!
 map j               gj
@@ -288,9 +295,12 @@ else
 endif
 
 " for Copilot
-if s:IsCDNSHost()
-    let g:copilot_node_command =
-                \ "/grid/common/pkgs/node/v16.15.0/bin/node"
+if s:IsWSLHost()
+    let g:copilot_node_command = "/home/anhong/node-v17.9.1-linux-x64/bin/node"
+elseif s:IsCDNSHost()
+    let g:copilot_node_command = "/grid/common/pkgs/node/v16.15.0/bin/node"
+else
+    let g:copilot_node_command = "C:\\Program\ Files\\nodejs\\node.exe"
 endif
 
 imap <silent><script><expr> <C-n> copilot#Accept("")
@@ -532,6 +542,7 @@ let g:which_key_vertical = 1
 let g:which_key_map = {}
 let g:which_key_map['LeaderF'] = {
             \ 'name': '+LeaderF',
+            \ 'b' : ['<cmd>LeaderfBuffer\<cr>',               'current-buffers'],
             \ 'f' : ['<cmd>Leaderf file\<cr>',                'current-directory'],
             \ 'g' : ['<cmd>call SearchGitRepo()\<cr>',        'git-repository'],
             \ 'p' : ['<cmd>call SearchP4Client()\<cr>',       'perforce-client'],
