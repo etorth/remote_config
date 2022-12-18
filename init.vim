@@ -249,6 +249,11 @@ endfunction
 command! TabSpace2 :call TabSpace2()
 
 function! DiffWithSavedFunc()
+    if expand('%')->empty()
+        echohl ErrorMsg | echo "Buffer is not loaded from saved file" | echohl None
+        return
+    endif
+
     let l:filetype=&ft
     diffthis
     vnew | read # | normal! 1Gdd
