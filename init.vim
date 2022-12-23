@@ -76,7 +76,7 @@ Plug 'nvim-lua/plenary.nvim'
 Plug 'liuchengxu/vim-which-key'
 Plug 'chrisbra/csv.vim'
 Plug 'github/copilot.vim'
-Plug 'dracula/vim', {'as': 'dracula'}
+Plug 'NLKNguyen/papercolor-theme'
 
 call plug#end()
 
@@ -336,8 +336,7 @@ endif
 let g:alternateExtensions_C = "h,hpp,H,HPP"
 let g:alternateExtensions_h = "c,cpp,cxx,cc,CC,C,CPP,CXX"
 
-let g:dracula_high_contrast_diff = 1
-colorscheme dracula
+colorscheme PaperColor
 
 " Trailing whitespaces:
 " highlight all trailing whitespaces
