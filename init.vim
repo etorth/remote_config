@@ -23,7 +23,7 @@ function! IsCDNSHost()
 endfunction
 
 function! IsWSLHost()
-    return hostname() =~ "PC-ANHONG2"
+    return hostname() =~ "PC-ANHONG2" && IsLinux()
 endfunction
 
 function! IsP4Enabled()
