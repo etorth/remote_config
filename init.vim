@@ -76,7 +76,7 @@ Plug 'nvim-lua/plenary.nvim'
 Plug 'liuchengxu/vim-which-key'
 Plug 'chrisbra/csv.vim'
 Plug 'github/copilot.vim'
-Plug 'sainnhe/everforest'
+Plug 'folke/tokyonight.nvim', { 'branch': 'main' }
 
 call plug#end()
 
@@ -349,11 +349,7 @@ if has('termguicolors')
 endif
 
 set background=dark
-
-let g:everforest_background = 'hard'
-let g:everforest_better_performance = 1
-
-colorscheme everforest
+colorscheme tokyonight-storm
 
 " Trailing whitespaces:
 " highlight all trailing whitespaces
