@@ -48,7 +48,7 @@ call plug#begin(stdpath('data').'/plugged')
 " Make sure you use single quotes
 
 " Plug 'neovim/nvim-lspconfig'
-" Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
+Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
 Plug 'Shougo/deoplete.nvim', {'do': ':UpdateRemotePlugins'}
 Plug 'Yggdroot/LeaderF', {'do': ':LeaderfInstallCExtension'}
 " Plug 'WolfgangMehner/c-support'
@@ -76,7 +76,7 @@ Plug 'nvim-lua/plenary.nvim'
 Plug 'liuchengxu/vim-which-key'
 Plug 'chrisbra/csv.vim'
 Plug 'github/copilot.vim'
-Plug 'etorth/dracula-vim'
+Plug 'sainnhe/everforest'
 
 call plug#end()
 
@@ -336,8 +336,24 @@ endif
 let g:alternateExtensions_C = "h,hpp,H,HPP"
 let g:alternateExtensions_h = "c,cpp,cxx,cc,CC,C,CPP,CXX"
 
-let g:dracula_high_contrast_diff=1
-colorscheme dracula
+lua << EOF
+require('nvim-treesitter.configs').setup {
+  -- one of "all", "maintained" (parsers with maintainers),
+  -- or a list of languages
+  ensure_installed = { "python", "c", "cpp" },
+}
+EOF
+
+if has('termguicolors')
+    set termguicolors
+endif
+
+set background=dark
+
+let g:everforest_background = 'hard'
+let g:everforest_better_performance = 1
+
+colorscheme everforest
 
 " Trailing whitespaces:
 " highlight all trailing whitespaces
