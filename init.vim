@@ -336,6 +336,7 @@ endif
 let g:alternateExtensions_C = "h,hpp,H,HPP"
 let g:alternateExtensions_h = "c,cpp,cxx,cc,CC,C,CPP,CXX"
 
+if !IsWindows()
 lua << EOF
 require('nvim-treesitter.configs').setup {
   -- one of "all", "maintained" (parsers with maintainers),
@@ -343,6 +344,7 @@ require('nvim-treesitter.configs').setup {
   ensure_installed = { "python", "c", "cpp" },
 }
 EOF
+endif
 
 if has('termguicolors')
     set termguicolors
