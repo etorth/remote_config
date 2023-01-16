@@ -76,7 +76,7 @@ Plug 'nvim-lua/plenary.nvim'
 Plug 'liuchengxu/vim-which-key'
 Plug 'chrisbra/csv.vim'
 Plug 'github/copilot.vim'
-Plug 'folke/tokyonight.nvim', { 'branch': 'main' }
+Plug 'etorth/dracula-vim'
 
 call plug#end()
 
@@ -350,8 +350,9 @@ if has('termguicolors')
     set termguicolors
 endif
 
+let g:dracula_high_constrast_diff = 1
 set background=dark
-colorscheme tokyonight-storm
+colorscheme dracula
 
 " Trailing whitespaces:
 " highlight all trailing whitespaces
