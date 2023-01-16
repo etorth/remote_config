@@ -350,7 +350,7 @@ if has('termguicolors')
     set termguicolors
 endif
 
-let g:dracula_high_constrast_diff = 1
+let g:dracula_high_contrast_diff = 1
 set background=dark
 colorscheme dracula
 
