@@ -55,6 +55,7 @@ Plug 'Yggdroot/LeaderF', {'do': ':LeaderfInstallCExtension'}
 " Plug 'sbdchd/neoformat'
 Plug 'dstein64/vim-startuptime'
 Plug 'godlygeek/tabular'
+Plug 'bogado/file-line'
 Plug 'windwp/nvim-autopairs'
 Plug 'luochen1990/rainbow'
 Plug 'farmergreg/vim-lastplace'
