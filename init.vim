@@ -217,7 +217,11 @@ imap <silent><script><expr> <C-n> copilot#Accept("")
 let g:copilot_no_tab_map = v:true
 
 if IsP4Enabled()
-    let &makeprg="gmake -j 32 debug-install SYSTRG=64bit"
+    if $UTH_ARCH == "Z3"
+        let &makeprg="gmake -j 32 debug-install SYSTRG=64bit ETX=8"
+    else
+        let &makeprg="gmake -j 32 debug-install SYSTRG=64bit"
+    endif
 else
     let &makeprg="make -j 4"
 endif
