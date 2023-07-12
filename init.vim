@@ -78,6 +78,7 @@ Plug 'liuchengxu/vim-which-key'
 Plug 'chrisbra/csv.vim'
 Plug 'github/copilot.vim'
 Plug 'etorth/dracula-vim'
+Plug 'justinmk/vim-sneak'
 
 call plug#end()
 
