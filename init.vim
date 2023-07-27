@@ -247,12 +247,12 @@ function! IgnoreSpaceDiff()
 endfunction
 command! IgnoreSpaceDiff :call IgnoreSpaceDiff()
 
-function! TabSpace2()
+function! Tabspace2()
     set tabstop=2
-    set softtabstop=2
     set shiftwidth=2
+    set softtabstop=2
 endfunction
-command! TabSpace2 :call TabSpace2()
+command! Tabspace2 :call Tabspace2()
 
 function! DiffWithSavedFunc()
     if expand('%')->empty()
