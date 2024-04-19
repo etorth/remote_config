@@ -31,7 +31,7 @@ function! IsP4Enabled()
 endfunction
 
 if IsWindows()
-    let g:python3_host_prog = 'C:\Users\anhong\AppData\Local\Programs\Python\Python311\python.exe'
+    let g:python3_host_prog = 'C:\Users\anhong\scoop\apps\python\current\python.exe'
 endif
 
 " ================
@@ -76,7 +76,7 @@ Plug 'nvim-lua/popup.nvim'
 Plug 'nvim-lua/plenary.nvim'
 Plug 'liuchengxu/vim-which-key'
 Plug 'chrisbra/csv.vim'
-Plug 'github/copilot.vim'
+" Plug 'github/copilot.vim'
 Plug 'etorth/dracula-vim'
 Plug 'justinmk/vim-sneak'
 
