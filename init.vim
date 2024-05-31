@@ -48,9 +48,9 @@ call plug#begin(stdpath('data').'/plugged')
 " Make sure you use single quotes
 
 " Plug 'neovim/nvim-lspconfig'
-Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
+" Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
 Plug 'Shougo/deoplete.nvim', {'do': ':UpdateRemotePlugins'}
-Plug 'Yggdroot/LeaderF', {'do': ':LeaderfInstallCExtension'}
+Plug 'Yggdroot/LeaderF', {'do': ':LeaderfInstallCExtension', 'tag': 'v1.25' }
 " Plug 'WolfgangMehner/c-support'
 " Plug 'sbdchd/neoformat'
 Plug 'dstein64/vim-startuptime'
@@ -342,15 +342,15 @@ endif
 let g:alternateExtensions_C = "h,hpp,H,HPP"
 let g:alternateExtensions_h = "c,cpp,cxx,cc,CC,C,CPP,CXX"
 
-if !IsWindows()
-lua << EOF
-require('nvim-treesitter.configs').setup {
-  -- one of "all", "maintained" (parsers with maintainers),
-  -- or a list of languages
-  ensure_installed = { "python", "c", "cpp" },
-}
-EOF
-endif
+" if !IsWindows()
+" lua << EOF
+" require('nvim-treesitter.configs').setup {
+"   -- one of "all", "maintained" (parsers with maintainers),
+"   -- or a list of languages
+"   ensure_installed = { "python", "c", "cpp" },
+" }
+" EOF
+" endif
 
 if has('termguicolors')
     set termguicolors
