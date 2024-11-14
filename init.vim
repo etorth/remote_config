@@ -76,7 +76,6 @@ Plug 'nvim-lua/popup.nvim'
 Plug 'nvim-lua/plenary.nvim'
 Plug 'liuchengxu/vim-which-key'
 Plug 'chrisbra/csv.vim'
-" Plug 'github/copilot.vim'
 Plug 'Exafunction/codeium.vim', {'branch': 'main'}
 Plug 'etorth/dracula-vim'
 " Plug 'justinmk/vim-sneak'
@@ -207,16 +206,14 @@ elseif IsWindows()
     set undofile
 endif
 
-if IsWSLHost()
-    let g:copilot_node_command = "/home/anhong/node-v17.9.1-linux-x64/bin/node"
-elseif IsCDNSHost()
-    let g:copilot_node_command = "/grid/common/pkgs/node/v16.15.0/bin/node"
-else
-    let g:copilot_node_command = "C:\\Program\ Files\\nodejs\\node.exe"
-endif
-
-imap <silent><script><expr> <C-n> copilot#Accept("")
-let g:copilot_no_tab_map = v:true
+" let g:codeium_disable_bindings = 1
+" imap <script><silent><nowait><expr> <C-N> codeium#Accept()
+" imap <script><silent><nowait><expr> <C-K> codeium#AcceptNextWord()
+" imap <script><silent><nowait><expr> <C-L> codeium#AcceptNextLine()
+"
+" imap <C-;> <Cmd>call codeium#CycleCompletions( 1)<CR>
+" imap <C-,> <Cmd>call codeium#CycleCompletions(-1)<CR>
+" imap <C-X> <Cmd>call codeium#Clear()<CR>
 
 if IsP4Enabled()
     if $UTH_ARCH == "Z3"
