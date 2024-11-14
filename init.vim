@@ -76,7 +76,7 @@ Plug 'nvim-lua/popup.nvim'
 Plug 'nvim-lua/plenary.nvim'
 Plug 'liuchengxu/vim-which-key'
 Plug 'chrisbra/csv.vim'
-Plug 'Exafunction/codeium.vim', {'branch': 'main'}
+" Plug 'Exafunction/codeium.vim', {'branch': 'main'}
 Plug 'etorth/dracula-vim'
 " Plug 'justinmk/vim-sneak'
 
