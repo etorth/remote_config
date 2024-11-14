@@ -50,7 +50,7 @@ call plug#begin(stdpath('data').'/plugged')
 " Plug 'neovim/nvim-lspconfig'
 " Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
 Plug 'Shougo/deoplete.nvim', {'do': ':UpdateRemotePlugins'}
-Plug 'Yggdroot/LeaderF', {'do': ':LeaderfInstallCExtension', 'tag': 'v1.25' }
+Plug 'Yggdroot/LeaderF', {'do': ':LeaderfInstallCExtension', 'tag': 'v1.25'}
 " Plug 'WolfgangMehner/c-support'
 " Plug 'sbdchd/neoformat'
 Plug 'dstein64/vim-startuptime'
@@ -77,6 +77,7 @@ Plug 'nvim-lua/plenary.nvim'
 Plug 'liuchengxu/vim-which-key'
 Plug 'chrisbra/csv.vim'
 " Plug 'github/copilot.vim'
+Plug 'Exafunction/codeium.vim', {'branch': 'main'}
 Plug 'etorth/dracula-vim'
 " Plug 'justinmk/vim-sneak'
 
