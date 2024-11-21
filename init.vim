@@ -76,7 +76,7 @@ Plug 'nvim-lua/popup.nvim'
 Plug 'nvim-lua/plenary.nvim'
 Plug 'liuchengxu/vim-which-key'
 Plug 'chrisbra/csv.vim'
-" Plug 'Exafunction/codeium.vim', {'branch': 'main'}
+Plug 'Exafunction/codeium.vim', {'branch': 'main'}
 Plug 'etorth/dracula-vim'
 " Plug 'justinmk/vim-sneak'
 
@@ -206,14 +206,15 @@ elseif IsWindows()
     set undofile
 endif
 
-" let g:codeium_disable_bindings = 1
-" imap <script><silent><nowait><expr> <C-N> codeium#Accept()
+let g:codeium_disable_bindings = 1
+imap <script><silent><nowait><expr> <C-N> codeium#Accept()
+imap <script><silent><nowait><expr> <C-L> codeium#AcceptNextLine()
 " imap <script><silent><nowait><expr> <C-K> codeium#AcceptNextWord()
-" imap <script><silent><nowait><expr> <C-L> codeium#AcceptNextLine()
-"
+
 " imap <C-;> <Cmd>call codeium#CycleCompletions( 1)<CR>
-" imap <C-,> <Cmd>call codeium#CycleCompletions(-1)<CR>
+" imap <C-'> <Cmd>call codeium#CycleCompletions(-1)<CR>
 " imap <C-X> <Cmd>call codeium#Clear()<CR>
+
 
 if IsP4Enabled()
     if $UTH_ARCH == "Z3"
