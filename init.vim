@@ -76,9 +76,8 @@ Plug 'nvim-lua/popup.nvim'
 Plug 'nvim-lua/plenary.nvim'
 Plug 'liuchengxu/vim-which-key'
 Plug 'chrisbra/csv.vim'
-Plug 'Exafunction/codeium.vim', {'branch': 'main'}
+Plug 'github/copilot.vim'
 Plug 'etorth/dracula-vim'
-" Plug 'justinmk/vim-sneak'
 
 call plug#end()
 
@@ -205,16 +204,6 @@ elseif IsWindows()
     set undodir=$HomePath/.vimundo
     set undofile
 endif
-
-let g:codeium_disable_bindings = 1
-imap <script><silent><nowait><expr> <C-N> codeium#Accept()
-imap <script><silent><nowait><expr> <C-L> codeium#AcceptNextLine()
-" imap <script><silent><nowait><expr> <C-K> codeium#AcceptNextWord()
-
-" imap <C-;> <Cmd>call codeium#CycleCompletions( 1)<CR>
-" imap <C-'> <Cmd>call codeium#CycleCompletions(-1)<CR>
-" imap <C-X> <Cmd>call codeium#Clear()<CR>
-
 
 if IsP4Enabled()
     if $UTH_ARCH == "Z3"
@@ -418,6 +407,10 @@ function! SearchCmakeSourceDir() abort
     endif
     Leaderf file
 endfunction
+
+let g:copilot_node_command = "/grid/common/pkgs/node/v18.20.4/bin/node"
+imap <silent><script><expr> <C-L> copilot#Accept("")
+let g:copilot_no_tab_map = v:true
 
 " interface for LeaderF, using vim-which-key
 " if want to build one by using float-window, check: https://www.statox.fr/posts/2021/03/breaking_habits_floating_window/
