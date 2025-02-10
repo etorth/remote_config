@@ -23,7 +23,7 @@ function! IsCDNSHost()
 endfunction
 
 function! IsWSLHost()
-    return hostname() =~ "PC-ANHONG2" && IsLinux()
+    return (hostname() =~ "PC-ANHONG2" || hostname() =~ "PC-BBNVJX3") && IsLinux()
 endfunction
 
 function! IsP4Enabled()
@@ -408,7 +408,12 @@ function! SearchCmakeSourceDir() abort
     Leaderf file
 endfunction
 
-let g:copilot_node_command = "/grid/common/pkgs/node/v18.20.4/bin/node"
+if IsCDNSHost()
+    let g:copilot_node_command = "/grid/common/pkgs/node/v18.20.4/bin/node"
+elseif IsWSLHost()
+    let g:copilot_node_command = "/home/anhong/node-v22.13.1-linux-x64/bin/node"
+endif
+
 imap <silent><script><expr> <C-L> copilot#Accept("")
 let g:copilot_no_tab_map = v:true
 
