@@ -211,8 +211,6 @@ if IsP4Enabled()
     else
         let &makeprg="gmake -j 32 debug-install SYSTRG=64bit"
     endif
-else
-    let &makeprg="make -j 32"
 endif
 
 function! Tailf()
