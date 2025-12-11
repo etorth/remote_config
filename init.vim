@@ -364,7 +364,7 @@ nnoremap <silent> <leader>ds :let _s=@/ <Bar> :%s/\s\+$//e <Bar> :let @/=_s <Bar
 " currently use clangd, may also try ccls, check: https://github.com/neovim/nvim-lspconfig/blob/master/CONFIG.md
 
 if IsCDNSHost()
-    lua vim.lsp.enable('clangd', {cmd = {'/grid/common/pkgs/llvm/ps2027/bin/clangd', '--background-index', '--clang-tidy', '--completion-style=detailed', '--header-insertion=never', '--header-insertion-decorators=0' }})
+    lua vim.lsp.enable('clangd', {cmd = {'/grid/common/pkgs/llvm/ps2027/bin/clangd', '--background-index', '--clang-tidy', '--completion-style=detailed', '--header-insertion=never', '--header-insertion-decorators=0'}})
 elseif IsWSLHost()
     lua vim.lsp.enable('clangd', {cmd = {'clangd',                                   '--background-index', '--clang-tidy', '--completion-style=detailed', '--header-insertion=never', '--header-insertion-decorators=0'}})
 endif
