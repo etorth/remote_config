@@ -206,7 +206,9 @@ elseif IsWindows()
 endif
 
 if IsP4Enabled()
-    if $UTH_ARCH == "Z3"
+    if $UTH_ARCH == "Z4"
+        let &makeprg="gmake -j 32 debug-install SYSTRG=64bit ETX=9"
+    elseif $UTH_ARCH == "Z3"
         let &makeprg="gmake -j 32 debug-install SYSTRG=64bit ETX=8"
     else
         let &makeprg="gmake -j 32 debug-install SYSTRG=64bit"
@@ -407,7 +409,7 @@ function! SearchCmakeSourceDir() abort
 endfunction
 
 if IsCDNSHost()
-    let g:copilot_node_command = "/grid/common/pkgs/node/v18.20.4/bin/node"
+    let g:copilot_node_command = "/grid/common/pkgs/node/v22.12/bin/node"
 elseif IsWSLHost()
     let g:copilot_node_command = "/home/anhong/node-latest-linux-x64/bin/node"
 endif
