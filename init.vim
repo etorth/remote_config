@@ -47,7 +47,7 @@ call plug#begin(stdpath('data').'/plugged')
 
 " Make sure you use single quotes
 
-" Plug 'neovim/nvim-lspconfig'
+Plug 'neovim/nvim-lspconfig'
 " Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
 Plug 'Shougo/deoplete.nvim', {'do': ':UpdateRemotePlugins'}
 Plug 'Yggdroot/LeaderF', {'do': ':LeaderfInstallCExtension', 'tag': 'v1.25'}
@@ -362,12 +362,12 @@ nnoremap <silent> <leader>ds :let _s=@/ <Bar> :%s/\s\+$//e <Bar> :let @/=_s <Bar
 
 " LSP config
 " currently use clangd, may also try ccls, check: https://github.com/neovim/nvim-lspconfig/blob/master/CONFIG.md
-"
-" lua << EOF
-" require'lspconfig'.clangd.setup{
-"     cmd = {"clangd-11", "--background-index", "--compile-commands-dir=/home/anhong/b"},
-" }
-" EOF
+
+if IsCDNSVMHost()
+    lua vim.lsp.enable('clangd', {cmd = {'/grid/common/pkgs/llvm/ps2027/bin/clangd', '--background-index', '--clang-tidy', '--completion-style=detailed', '--header-insertion=never', '--header-insertion-decorators=0' }})
+elseif IsWSLHost()
+    lua vim.lsp.enable('clangd', {cmd = {'clangd',                                   '--background-index', '--clang-tidy', '--completion-style=detailed', '--header-insertion=never', '--header-insertion-decorators=0'}})
+endif
 
 " config for LeaderF
 " gui interface is implemented by vim-which-key
