@@ -235,6 +235,32 @@ function! IgnoreSpaceDiff()
 endfunction
 command! IgnoreSpaceDiff :call IgnoreSpaceDiff()
 
+function! SwitchDiffOptFunc()
+    let l:algorithms = ['myers', 'minimal', 'patience', 'histogram']
+    let l:current_algo = ''
+
+    for algo in l:algorithms
+        if &diffopt =~ 'algorithm:' . algo
+            let l:current_algo = algo
+            break
+        endif
+    endfor
+
+    if empty(l:current_algo)
+        let l:current_algo = 'myers'
+    endif
+
+    let l:current_idx = index(l:algorithms, l:current_algo)
+    let l:next_idx = (l:current_idx + 1) % len(l:algorithms)
+    let l:next_algo = l:algorithms[l:next_idx]
+
+    execute 'set diffopt-=algorithm:' . l:current_algo
+    execute 'set diffopt+=algorithm:' . l:next_algo
+
+    echo 'Diff Algorithm: ' . l:current_algo . ' -> ' . l:next_algo
+endfunction
+command! SwitchDiffOpt :call SwitchDiffOptFunc()
+
 function! Tabspace2()
     set tabstop=2
     set shiftwidth=2
@@ -366,7 +392,7 @@ nnoremap <silent> <leader>ds :let _s=@/ <Bar> :%s/\s\+$//e <Bar> :let @/=_s <Bar
 if IsCDNSHost()
     lua vim.lsp.enable('clangd', {cmd = {'/grid/common/pkgs/llvm/ps2027/bin/clangd', '--background-index', '--clang-tidy', '--completion-style=detailed', '--header-insertion=never', '--header-insertion-decorators=0'}})
 elseif IsWSLHost()
-    lua vim.lsp.enable('clangd', {cmd = {'clangd',                                   '--background-index', '--clang-tidy', '--completion-style=detailed', '--header-insertion=never', '--header-insertion-decorators=0'}})
+    lua vim.lsp.enable('clangd', {cmd = {'clangd',                                   '--background-index', '--clang-tidy', '--completion-style=detailed', '--header-insertion=never', '--header-insertion-decorators=0', '--compile-commands-dir=/home/anhong/b_mir2x'}})
 endif
 
 " config for LeaderF
