@@ -435,7 +435,7 @@ function! SearchCmakeSourceDir() abort
 endfunction
 
 if IsCDNSHost()
-    let g:copilot_node_command = "/grid/common/pkgs/node/v22.12/bin/node"
+    let g:copilot_node_command = "/grid/common/pkgs/node/v24.4/bin/node"
 elseif IsWSLHost()
     let g:copilot_node_command = "/home/anhong/node-latest-linux-x64/bin/node"
 endif
