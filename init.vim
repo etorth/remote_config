@@ -162,9 +162,11 @@ autocmd BufEnter *.c   set nowrap
 autocmd BufEnter *.C   set nowrap
 autocmd BufEnter *.sh  set nowrap
 
-syntax      on
-filetype    plugin on
-filetype    indent on
+syntax on
+syntax sync fromstart
+
+filetype plugin on
+filetype indent on
 
 autocmd BufEnter *.txt set spell
 autocmd BufEnter *.tex set spell
