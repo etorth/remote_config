@@ -123,6 +123,7 @@ augroup init_filetypes
     autocmd!
     autocmd BufRead,BufNewFile *.fl         set filetype=cpp
     autocmd BufRead,BufNewFile *.qel,*.xel  set filetype=tcl
+    autocmd BufRead,BufNewFile *.regtest    set filetype=sh
 
     autocmd BufRead,BufNewFile *.c,*.h,*.hpp,*.sh setlocal foldmethod=indent
     autocmd FileType c,cpp,sh,bash  setlocal nowrap
